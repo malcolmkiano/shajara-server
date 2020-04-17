@@ -1,4 +1,4 @@
-const Service = require('../service');
+const Service = require('../base-service');
 const bcrypt = require('bcryptjs');
 
 const REGEX_UPPER_LOWER_NUMBER = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])+/;
@@ -9,6 +9,7 @@ class UsersService extends Service {
   }
 
   validatePassword(password) {
+    password = password.toString();
     if (password.length < 8) {
       return 'Password must be longer than 8 characters';
     }
@@ -22,7 +23,7 @@ class UsersService extends Service {
     }
 
     if (!REGEX_UPPER_LOWER_NUMBER.test(password)) {
-      return 'Password must contain 1 uppercase, lowercase and number';
+      return 'Password must contain at least 1 uppercase, lowercase and number characters';
     }
   }
 

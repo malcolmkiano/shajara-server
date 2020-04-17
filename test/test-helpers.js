@@ -40,27 +40,31 @@ function makeEntriesArray(users) {
       id: 1,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       user_id: users[0].id,
-      date_created: new Date('2020-04-15T16:00:00.005Z'),
+      date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 2,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       user_id: users[1].id,
-      date_created: new Date('2020-04-15T16:00:00.005Z'),
+      date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 3,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       user_id: users[2].id,
-      date_created: new Date('2020-04-15T16:00:00.005Z'),
+      date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 4,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       user_id: users[3].id,
-      date_created: new Date('2020-04-15T16:00:00.005Z'),
+      date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     }
   ];
+}
+
+function makeExpectedEntries(user, entries) {
+  return entries.filter(entry => entry.user_id === user.id);
 }
 
 function makeFixtures() {
@@ -103,7 +107,7 @@ function seedUsers(db, users) {
     );
 }
 
-function seedEntriesTable(db, users, entries) {
+function seedEntriesTables(db, users, entries) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
     await seedUsers(trx, users);
@@ -127,10 +131,11 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
   makeUsersArray,
   makeEntriesArray,
+  makeExpectedEntries,
 
   makeFixtures,
   cleanTables,
-  seedEntriesTable,
+  seedEntriesTables,
   makeAuthHeader,
   seedUsers,
 };

@@ -2,7 +2,7 @@ const express = require('express');
 const UsersService = require('./users-service');
 
 /**
- * Router to handle all requests to /employees
+ * Router to handle all requests to /api/users
  */
 const usersRouter = express.Router();
 usersRouter.use(express.json());
@@ -33,7 +33,7 @@ usersRouter.post('/', (req, res, next) => {
         .then(hashedPassword => {
           const newUser = {
             first_name,
-            email_address,
+            email_address: email_address.toLowerCase(), // to save me stress later
             password: hashedPassword,
             date_created: 'now()'
           };
