@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS shajara_entries
+ADD mood INTEGER DEFAULT 3;

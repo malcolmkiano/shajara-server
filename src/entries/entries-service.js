@@ -14,6 +14,7 @@ class EntriesService extends Service {
     return {
       id: entry.id,
       content: xss(entry.content),
+      mood: entry.mood,
       date_created: new Date(entry.date_created).toISOString()
     };
   }

@@ -86,7 +86,7 @@ describe('Entries Endpoints', function () {
     );
 
     context('Input validation', () => {
-      const requiredFields = ['content'];
+      const requiredFields = ['content', 'mood'];
       requiredFields.forEach(field => {
         const testEntry = { ...testEntries[0] };
 
@@ -116,6 +116,7 @@ describe('Entries Endpoints', function () {
           .expect(res => {
             expect(res.body).to.have.property('id');
             expect(res.body.content).to.eql(testEntry.content);
+            expect(res.body.mood).to.eql(testEntry.mood);
             const expectedDate = new Date().toLocaleString();
             const actualDate = new Date(res.body.date_created).toLocaleString();
             expect(actualDate).to.eql(expectedDate);
@@ -128,6 +129,7 @@ describe('Entries Endpoints', function () {
               .first()
               .then(row => {
                 expect(row.content).to.eql(testEntry.content);
+                expect(row.mood).to.eql(testEntry.mood);
                 expect(row.user_id).to.eql(testEntry.user_id);
                 const expectedDate = new Date().toLocaleString();
                 const actualDate = new Date(row.date_created).toLocaleString();
@@ -176,6 +178,7 @@ describe('Entries Endpoints', function () {
           const idToUpdate = 1;
           const updateEntry = {
             content: 'New content!',
+            mood: 1,
             another: 'What is this?',
             random: 'This should not even be here!',
             burglar: 'WHY ARE YOU IN MY HOUSE?!',
@@ -198,6 +201,7 @@ describe('Entries Endpoints', function () {
                 .first()
                 .then(row => {
                   expect(row.content).to.eql(expectedEntry.content);
+                  expect(row.mood).to.eql(expectedEntry.mood);
                   expect(row).to.not.have.property('another');
                   expect(row).to.not.have.property('random');
                   expect(row).to.not.have.property('burglar');

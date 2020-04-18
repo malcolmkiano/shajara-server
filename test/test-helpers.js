@@ -39,24 +39,28 @@ function makeEntriesArray(users) {
     {
       id: 1,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      mood: 5,
       user_id: users[0].id,
       date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 2,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      mood: 4,
       user_id: users[1].id,
       date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 3,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      mood: 5,
       user_id: users[2].id,
       date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     },
     {
       id: 4,
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      mood: 3,
       user_id: users[3].id,
       date_created: new Date('2020-04-15T16:00:00.005Z').toISOString(),
     }

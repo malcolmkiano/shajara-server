@@ -22,8 +22,8 @@ entriesRouter.get('/', (req, res, next) => {
 // post a new entry
 entriesRouter.post('/', (req, res, next) => {
   const db = req.app.get('db');
-  const { content } = req.body;
-  const newEntry = { content };
+  const { content, mood } = req.body;
+  const newEntry = { content, mood };
 
   for (const [key, value] of Object.entries(newEntry))
     if (!value)
@@ -44,8 +44,8 @@ entriesRouter.post('/', (req, res, next) => {
 entriesRouter.patch('/:id', (req, res, next) => {
   const db = req.app.get('db');
   const { id } = req.params;
-  const { content } = req.body;
-  const entryToUpdate = { content };
+  const { content, mood } = req.body;
+  const entryToUpdate = { content, mood };
 
   EntriesService.getItemById(db, id)
     .then(dbEntry => {
