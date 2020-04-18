@@ -49,6 +49,11 @@ app.get('/api', (req, res) => {
     });
 });
 
+// say hello or something
+app.get('/', (req, res) => {
+  res.send('Shajara lives here');
+});
+
 // error handling
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, req, res) => {
