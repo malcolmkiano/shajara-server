@@ -81,7 +81,7 @@ describe('Users Endpoints', function () {
           .expect(400, { error: 'Password must not start or end with empty spaces' });
       });
 
-      it('responds with 400 when password starts with spaces', () => {
+      it('responds with 400 when password ends with spaces', () => {
         const userPasswordEndsSpaces = {
           ...newUser,
           password: '1spaceAfter '

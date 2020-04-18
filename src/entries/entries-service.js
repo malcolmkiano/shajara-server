@@ -1,4 +1,5 @@
 const Service = require('../base-service');
+const xss = require('xss');
 
 class EntriesService extends Service {
   constructor(table_name) {
@@ -7,6 +8,14 @@ class EntriesService extends Service {
 
   getUserEntries(db, user) {
     return super.getAllItems(db).where({ user_id: user.id});
+  }
+
+  serializeEntry(entry) {
+    return {
+      id: entry.id,
+      content: xss(entry.content),
+      date_created: new Date(entry.date_created).toISOString()
+    };
   }
 }
 

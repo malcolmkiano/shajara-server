@@ -36,7 +36,7 @@ class UsersService extends Service {
       id: user.id,
       first_name: user.first_name,
       email_address: user.email_address,
-      date_created: new Date(user.date_created)
+      date_created: new Date(user.date_created).toISOString()
     };
   }
 }
