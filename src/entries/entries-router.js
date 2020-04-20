@@ -14,7 +14,7 @@ entriesRouter.get('/', (req, res, next) => {
   const db = req.app.get('db');
   EntriesService.getUserEntries(db, req.user)
     .then(entries =>
-      res.status(200).json(entries)
+      res.status(200).json(entries.map(EntriesService.serializeEntry))
     )
     .catch(next);
 });

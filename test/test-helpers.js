@@ -68,7 +68,13 @@ function makeEntriesArray(users) {
 }
 
 function makeExpectedEntries(user, entries) {
-  return entries.filter(entry => entry.user_id === user.id);
+  return entries
+    .filter(entry => entry.user_id === user.id)
+    .map(entry => {
+      const serializedEntry = { ...entry };
+      delete serializedEntry.user_id;
+      return serializedEntry;
+    });
 }
 
 function makeFixtures() {

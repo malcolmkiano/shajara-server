@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const app = express();
-const { NODE_ENV } = require('./config');
+const { NODE_ENV, CLIENT_ORIGIN } = require('./config');
 const morganOption = (process.env.NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
@@ -12,7 +12,14 @@ const morganOption = (process.env.NODE_ENV === 'production')
 // set up middleware
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors());
+
+if (NODE_ENV === 'development') {
+  app.use(cors());
+} else {
+  app.use(cors({
+    origin: CLIENT_ORIGIN
+  }));
+}
 
 // import routers
 const usersRouter = require('./users/users-router');
@@ -36,7 +43,7 @@ const routes = [
 ];
 
 // add routes to app
-routes.forEach(({url, router}) => {
+routes.forEach(({ url, router }) => {
   app.use(url, router);
 });
 
