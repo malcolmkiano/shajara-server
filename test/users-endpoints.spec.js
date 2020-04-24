@@ -48,6 +48,39 @@ describe('Users Endpoints', function () {
         });
       });
 
+      it('responds with 400 when first_name is too short', () => {
+        const userShortName = {
+          ...newUser,
+          first_name: 'A'
+        };
+        return supertest(app)
+          .post('/api/users')
+          .send(userShortName)
+          .expect(400, { error: 'First name must be 2 or more characters' });
+      });
+
+      it('responds with 400 when first_name is too long', () => {
+        const userLongName = {
+          ...newUser,
+          first_name: 'A'.repeat(31)
+        };
+        return supertest(app)
+          .post('/api/users')
+          .send(userLongName)
+          .expect(400, { error: 'First name must be less than 30 characters' });
+      });
+
+      it('responds with 400 when first_name contains invalid characters', () => {
+        const userInvalidName = {
+          ...newUser,
+          first_name: 'Invalid Name'
+        };
+        return supertest(app)
+          .post('/api/users')
+          .send(userInvalidName)
+          .expect(400, { error: 'First name must contain only alphabetic characters and no spaces' });
+      });
+
       it('responds with 400 when password is too short', () => {
         const userShortPassword = {
           ...newUser,
@@ -56,7 +89,7 @@ describe('Users Endpoints', function () {
         return supertest(app)
           .post('/api/users')
           .send(userShortPassword)
-          .expect(400, { error: 'Password must be longer than 8 characters' });
+          .expect(400, { error: 'Password must be 8 or more characters' });
       });
 
       it('responds with 400 when password is too long', () => {
@@ -103,6 +136,17 @@ describe('Users Endpoints', function () {
           .expect(400, { error: 'Password must contain at least 1 uppercase, lowercase and number characters' });
       });
 
+      it('responds with 400 when email_address is invalid', () => {
+        const userInvalidEmail = {
+          ...newUser,
+          email_address: 'not a real email address'
+        };
+        return supertest(app)
+          .post('/api/users')
+          .send(userInvalidEmail)
+          .expect(400, { error: 'Email address must be valid' });
+      });
+
       it('responds with 400 when email address isn\'t unique', () => {
         const duplicateUser = { ...testUsers[0] };
         return supertest(app)
@@ -114,6 +158,7 @@ describe('Users Endpoints', function () {
 
     context('Happy path', () => {
       it('responds with 201, serialized user, storing bcrypted password', () => {
+        this.retries(3);
         return supertest(app)
           .post('/api/users')
           .send(newUser)

@@ -40,7 +40,7 @@ Returns a list of the available endpoints.
 ---
 
 ### `POST /api/users`
-Creates new user accounts in the database. This requires a JSON Object with `first_name`, `email_address` (**unique**) and `password` (**8-72 characters with at least 1 uppercase, 1 lowercase, and 1 number**) in the request body.
+Creates new user accounts in the database. This requires a JSON Object with `first_name` (**2-30 alphabetic characters with no spaces or numbers**), `email_address` (**valid and unique**) and `password` (**8-72 characters with at least 1 uppercase, 1 lowercase, and 1 number**) in the request body.
 
 #### Response: `200 OK`
 ```JSON

@@ -16,12 +16,19 @@ usersRouter.post('/', (req, res, next) => {
       return res.status(400).json({
         error: `Missing '${field}' in request body`
       });
-  
-  const passwordError = UsersService.validatePassword(password);
 
+  const firstNameError = UsersService.validateFirstName(first_name);
+  if (firstNameError)
+    return res.status(400).json({ error: firstNameError });
+  
+  const emailError = UsersService.validateEmail(email_address);
+  if (emailError)
+    return res.status(400).json({ error: emailError });
+
+  const passwordError = UsersService.validatePassword(password);
   if (passwordError)
     return res.status(400).json({ error: passwordError });
-  
+
   UsersService.getItemByField(db, 'email_address', email_address)
     .then(user => {
       if (user)
@@ -37,7 +44,7 @@ usersRouter.post('/', (req, res, next) => {
             password: hashedPassword,
             date_created: 'now()'
           };
-    
+
           return UsersService.insertItem(db, newUser)
             .then(user => {
               return res
