@@ -1,6 +1,5 @@
 const express = require('express');
 const UsersService = require('./users-service');
-
 const CryptoService = require('../crypto-service');
 
 /**

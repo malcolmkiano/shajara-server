@@ -1,5 +1,6 @@
 const Service = require('../base-service');
 const xss = require('xss');
+const CryptoService = require('../crypto-service');
 
 class EntriesService extends Service {
   constructor(table_name) {
@@ -13,7 +14,7 @@ class EntriesService extends Service {
   serializeEntry(entry) {
     return {
       id: entry.id,
-      content: xss(entry.content),
+      content: xss(CryptoService.decrypt(entry.content)),
       mood: entry.mood,
       date_created: new Date(entry.date_created).toISOString()
     };

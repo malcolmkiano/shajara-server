@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const CryptoService = require('../src/crypto-service');
 
 function makeUsersArray() {
@@ -123,10 +122,16 @@ function seedUsers(db, users) {
 }
 
 function seedEntriesTables(db, users, entries) {
+  const preppedEntries = entries.map(entry => ({
+    ...entry,
+    content: CryptoService.encrypt(entry.content)
+  }));
+
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
+
     await seedUsers(trx, users);
-    await trx.into('shajara_entries').insert(entries);
+    await trx.into('shajara_entries').insert(preppedEntries);
     // update the auto sequence to match the forced id values
     await trx.raw(
       'SELECT setval(\'shajara_entries_id_seq\', ?)',

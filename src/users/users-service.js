@@ -1,7 +1,5 @@
 const Service = require('../base-service');
 const bcrypt = require('bcryptjs');
-
-// encryption brains
 const CryptoService = require('../crypto-service');
 
 const REGEX_ALPHA_NO_SPACES_OR_NUMBERS = /^[A-Za-z'-]+$/;

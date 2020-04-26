@@ -1,6 +1,7 @@
 const express = require('express');
 const EntriesService = require('./entries-service');
 const { requireAuth } = require('../middleware/jwt-auth');
+const CryptoService = require('../crypto-service');
 
 /**
  * Router to handle all requests to /entries
@@ -32,6 +33,7 @@ entriesRouter.post('/', (req, res, next) => {
       });
 
   newEntry.user_id = req.user.id;
+  newEntry.content = CryptoService.encrypt(newEntry.content);
 
   EntriesService.insertItem(db, newEntry)
     .then(entry =>

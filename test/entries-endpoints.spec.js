@@ -1,6 +1,7 @@
 const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
+const CryptoService = require('../src/crypto-service');
 
 describe('Entries Endpoints', function () {
   let db;
@@ -108,6 +109,11 @@ describe('Entries Endpoints', function () {
       it('responds with 201 and a new entry, and creates it in the database', function () {
         this.retries(3);
         const testEntry = testEntries[0];
+        const expectedEntry = {
+          ...testEntry,
+          content: CryptoService.encrypt(testEntry.content)
+        };
+
         return supertest(app)
           .post('/api/entries')
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
@@ -128,9 +134,9 @@ describe('Entries Endpoints', function () {
               .where({ id: res.body.id })
               .first()
               .then(row => {
-                expect(row.content).to.eql(testEntry.content);
-                expect(row.mood).to.eql(testEntry.mood);
-                expect(row.user_id).to.eql(testEntry.user_id);
+                expect(row.content).to.eql(expectedEntry.content);
+                expect(row.mood).to.eql(expectedEntry.mood);
+                expect(row.user_id).to.eql(expectedEntry.user_id);
                 const expectedDate = new Date().toLocaleString();
                 const actualDate = new Date(row.date_created).toLocaleString();
                 expect(actualDate).to.eql(expectedDate);
