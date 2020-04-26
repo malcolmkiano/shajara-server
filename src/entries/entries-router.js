@@ -62,6 +62,8 @@ entriesRouter.patch('/:id', (req, res, next) => {
           error: 'Request body must contain content'
         });
 
+      entryToUpdate.content = CryptoService.encrypt(entryToUpdate.content);
+
       EntriesService.updateItem(db, id, entryToUpdate)
         .then(() =>
           res.status(204).end()

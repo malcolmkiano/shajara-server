@@ -192,7 +192,8 @@ describe('Entries Endpoints', function () {
           };
           const expectedEntry = {
             ...testEntries[idToUpdate - 1],
-            ...updateEntry
+            ...updateEntry,
+            content: CryptoService.encrypt(updateEntry.content)
           };
           return supertest(app)
             .patch(`/api/entries/${idToUpdate}`)
@@ -223,9 +224,11 @@ describe('Entries Endpoints', function () {
           const updateEntry = {
             content: 'New content!'
           };
+
           const expectedEntry = {
             ...testEntries[idToUpdate - 1],
-            ...updateEntry
+            ...updateEntry,
+            content: CryptoService.encrypt(updateEntry.content)
           };
           return supertest(app)
             .patch(`/api/entries/${idToUpdate}`)
