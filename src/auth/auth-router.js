@@ -1,6 +1,8 @@
 const express = require('express');
 const AuthService = require('./auth-service');
 
+const CryptoService = require('../crypto-service');
+
 /**
  * Router to handle all requests to /api/auth
  */
@@ -18,7 +20,9 @@ authRouter.post('/login', (req, res, next) => {
         error: `Missing '${key}' in request body`
       });
   
-  AuthService.getItemByField(db, 'email_address', email_address.toLowerCase())
+  const encryptedEmail = CryptoService.encrypt(email_address.toLowerCase());
+  
+  AuthService.getItemByField(db, 'email_address', encryptedEmail)
     .then(dbUser => {
       if (!dbUser)
         return res.status(400).json({
@@ -32,10 +36,10 @@ authRouter.post('/login', (req, res, next) => {
               error: 'Incorrect email address or password'
             });
 
-          const sub = dbUser.email_address;
+          const sub = email_address;
           const payload = { user_id: dbUser.id };
           return res.status(200).json({
-            first_name: dbUser.first_name,
+            first_name: CryptoService.decrypt(dbUser.first_name),
             authToken: AuthService.createJwt(sub, payload)
           });
         });   

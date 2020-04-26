@@ -1,6 +1,9 @@
 const Service = require('../base-service');
 const bcrypt = require('bcryptjs');
 
+// encryption brains
+const CryptoService = require('../crypto-service');
+
 const REGEX_ALPHA_NO_SPACES_OR_NUMBERS = /^[A-Za-z'-]+$/;
 const REGEX_VALID_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGEX_UPPER_LOWER_NUMBER = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])+/;
@@ -56,10 +59,14 @@ class UsersService extends Service {
   }
 
   serializeUser(user) {
+    let { first_name, email_address } = user;
+    first_name = CryptoService.decrypt(first_name);
+    email_address = CryptoService.decrypt(email_address);
+
     return {
       id: user.id,
-      first_name: user.first_name,
-      email_address: user.email_address,
+      first_name,
+      email_address,
       date_created: new Date(user.date_created).toISOString()
     };
   }

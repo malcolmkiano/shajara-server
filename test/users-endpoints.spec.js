@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
+const CryptoService = require('../src/crypto-service');
+
 describe('Users Endpoints', function () {
   let db;
 
@@ -27,6 +29,12 @@ describe('Users Endpoints', function () {
       first_name: 'Tester',
       email_address: 'tester@email.com',
       password: 'TestPassword123'
+    };
+
+    const expectedUser = {
+      ...newUser,
+      first_name: CryptoService.encrypt(newUser.first_name),
+      email_address: CryptoService.encrypt(newUser.email_address)
     };
 
     context('User Validation', () => {
@@ -157,7 +165,7 @@ describe('Users Endpoints', function () {
     });
 
     context('Happy path', () => {
-      it('responds with 201, serialized user, storing bcrypted password', () => {
+      it('responds with 201, serialized user, storing bcrypted password', function() {
         this.retries(3);
         return supertest(app)
           .post('/api/users')
@@ -179,8 +187,8 @@ describe('Users Endpoints', function () {
               .where({ id: res.body.id })
               .first()
               .then(row => {
-                expect(row.first_name).to.eql(newUser.first_name);
-                expect(row.email_address).to.eql(newUser.email_address.toLowerCase());
+                expect(row.first_name).to.eql(expectedUser.first_name);
+                expect(row.email_address).to.eql(expectedUser.email_address.toLowerCase());
                 const expectedDate = new Date().toLocaleString();
                 const actualDate = new Date(row.date_created).toLocaleString();
                 expect(actualDate).to.eql(expectedDate);

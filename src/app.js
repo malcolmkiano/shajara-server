@@ -68,7 +68,7 @@ const errorHandler = (error, req, res, next) => {
   if (NODE_ENV === 'production') {
     response = { error: 'Server error' };
   } else {
-    response = { message: error.message, error };
+    response = { error: error.message, raw: error };
   }
 
   return res

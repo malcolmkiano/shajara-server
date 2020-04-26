@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const CryptoService = require('../src/crypto-service');
+
 function makeUsersArray() {
   return [
     {
@@ -105,8 +107,11 @@ function cleanTables(db) {
 function seedUsers(db, users) {
   const preppedUsers = users.map(user => ({
     ...user,
+    first_name: CryptoService.encrypt(user.first_name),
+    email_address: CryptoService.encrypt(user.email_address),
     password: bcrypt.hashSync(user.password, 1)
   }));
+
   return db.into('shajara_users').insert(preppedUsers)
     .then(() =>
       // update the auto sequence to stay in sync

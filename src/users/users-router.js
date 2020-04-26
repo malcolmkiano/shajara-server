@@ -1,6 +1,8 @@
 const express = require('express');
 const UsersService = require('./users-service');
 
+const CryptoService = require('../crypto-service');
+
 /**
  * Router to handle all requests to /api/users
  */
@@ -29,7 +31,9 @@ usersRouter.post('/', (req, res, next) => {
   if (passwordError)
     return res.status(400).json({ error: passwordError });
 
-  UsersService.getItemByField(db, 'email_address', email_address)
+  const encryptedEmail = CryptoService.encrypt(email_address.toLowerCase());
+
+  UsersService.getItemByField(db, 'email_address', encryptedEmail)
     .then(user => {
       if (user)
         return res.status(400).json({
@@ -39,8 +43,8 @@ usersRouter.post('/', (req, res, next) => {
       return UsersService.hashPassword(password)
         .then(hashedPassword => {
           const newUser = {
-            first_name,
-            email_address: email_address.toLowerCase(), // to save me stress later
+            first_name: CryptoService.encrypt(first_name),
+            email_address: encryptedEmail,
             password: hashedPassword,
             date_created: 'now()'
           };
