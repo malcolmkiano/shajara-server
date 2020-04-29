@@ -199,7 +199,7 @@ describe('Entries Endpoints', function () {
             .patch(`/api/entries/${idToUpdate}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(updateEntry)
-            .expect(204)
+            .expect(200)
             .then(() =>
               db
                 .from('shajara_entries')
@@ -234,7 +234,7 @@ describe('Entries Endpoints', function () {
             .patch(`/api/entries/${idToUpdate}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(updateEntry)
-            .expect(204)
+            .expect(200)
             .then(() =>
               db
                 .from('shajara_entries')

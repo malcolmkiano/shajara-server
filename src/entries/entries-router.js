@@ -65,8 +65,8 @@ entriesRouter.patch('/:id', (req, res, next) => {
       entryToUpdate.content = CryptoService.encrypt(entryToUpdate.content);
 
       EntriesService.updateItem(db, id, entryToUpdate)
-        .then(() =>
-          res.status(204).end()
+        .then(entry =>
+          res.status(200).json(EntriesService.serializeEntry(entry))
         );
     })
     .catch(next);

@@ -71,7 +71,9 @@ class Service {
     return db
       .from(this.table)
       .where({ id })
-      .update(data);
+      .update(data)
+      .returning('*')
+      .then(rows => rows[0]);
   }
 
   /**
